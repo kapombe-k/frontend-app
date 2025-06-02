@@ -13,7 +13,10 @@ export default function Visits() {
 
     return (
         <>
-            <h3>Visits Page</h3>
+            <h3>Visits</h3>
+            {visits.map((visit) => (
+                <div key={visit.id}></div>
+            ))}
         </>
     );
 }

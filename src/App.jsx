@@ -8,10 +8,10 @@ function App() {
 
   return (
     <>
-      <Appointments />
-      <Doctors />
       <Patients />
+      <Doctors />
       <Visits />
+      <Appointments />
     </>
   );
 }

@@ -13,7 +13,12 @@ export default function Patients() {
 
     return (
         <>
-            <h3>Patients Page</h3>
+            <h3>Patients</h3>
+            {patients.map((patient) => (
+                <div key={patient.id}>
+                    <h3>{patients.name}</h3>
+                </div>
+            ))}
         </>
   );
 }

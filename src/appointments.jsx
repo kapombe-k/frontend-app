@@ -12,8 +12,20 @@ export default function Appointments() {
   }, []);
 
     return (
-        <>
-            <h3>Appointments Page</h3>
-        </>
-  );
+      <>
+        <h3>Appointments</h3>
+        <div>
+          <search></search>
+          <button>Search</button>
+        </div>
+         <br />
+        <div>
+                {appointments.map((appointment) => (
+                    <div key={appointment.id}></div>
+                ))}
+                    
+              
+        </div>
+      </>
+    );
 }

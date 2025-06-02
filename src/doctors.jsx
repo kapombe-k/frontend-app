@@ -13,7 +13,10 @@ export default function Doctors() {
 
     return (
         <>
-            <h3>Doctors Page</h3>
+            <h3>Doctors</h3>
+            {doctors.map((doctor) => (
+                <div key={doctor.id}>{doctors.name}</div>
+            ))}
         </>
   );
 }
