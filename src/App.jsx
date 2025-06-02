@@ -1,18 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Patients from "./patients";
+import Doctors from "./doctors";
+import Appointments from "./appointments";
+import Visits from "./visits";
 
 function App() {
 
-  useEffect(() => {
-    fetch("http://localhost:9000/patients")
-      .then((res) => res.json)
-      .then((data) => {
-        console.log(data);
-      });
-  }, []);
-
   return (
     <>
-      
+      <Appointments />
+      <Doctors />
+      <Patients />
+      <Visits />
     </>
   );
 }
