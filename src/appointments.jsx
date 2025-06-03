@@ -126,18 +126,223 @@ export default function Appointments() {
     }
   };
 
+  // Delete an appointment
+  const deleteAppointment = async (id) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete appointment with ID: ${id}?`
+      )
+    ) {
+      try {
+        await axios.delete(`${API_BASE_URL}/appointments/${id}`);
+        alert("Appointment deleted successfully!");
+        fetchAllAppointments(); // Refresh the list
+        setPatientAppointments([]); // Clear patient specific search
+      } catch (error) {
+        console.error("Error deleting appointment:", error);
+        alert(
+          `Failed to delete appointment: ${
+            error.response?.data?.detail || error.message
+          }`
+        );
+      }
+    }
+  };
+
   return (
     <>
       <h3>Appointments</h3>
-      <div>
-        <search></search>
-        <button>Search</button>
-      </div>
-      <br />
-      <div>
-        {appointments.map((appointment) => (
-          <div key={appointment.id}></div>
-        ))}
+      <div style={styles.container}>
+        <h2>Appointment Management</h2>
+        <p>
+          Schedule, view, update, and cancel patient appointments with doctors.
+        </p>
+
+        {/* Add New Appointment */}
+        <div style={styles.section}>
+          <h3>Add New Appointment</h3>
+          <form onSubmit={addAppointment} style={styles.form}>
+            <input
+              type="date"
+              name="date"
+              value={newAppointment.date}
+              onChange={handleNewAppointmentChange}
+              required
+              style={styles.input}
+            />
+            <input
+              type="number"
+              name="patient_id"
+              placeholder="Patient ID"
+              value={newAppointment.patient_id}
+              onChange={handleNewAppointmentChange}
+              required
+              style={styles.input}
+            />
+            <input
+              type="number"
+              name="doctor_id"
+              placeholder="Doctor ID"
+              value={newAppointment.doctor_id}
+              onChange={handleNewAppointmentChange}
+              required
+              style={styles.input}
+            />
+            <button type="submit" style={styles.button}>
+              Add Appointment
+            </button>
+          </form>
+        </div>
+
+        {/* Search Appointments by Patient ID */}
+        <div style={styles.section}>
+          <h3>Search Appointments by Patient ID</h3>
+          <input
+            type="number"
+            placeholder="Patient ID"
+            value={searchPatientId}
+            onChange={(e) => setSearchPatientId(e.target.value)}
+            style={styles.input}
+          />
+          <button onClick={searchAppointmentsByPatient} style={styles.button}>
+            Search Appointments
+          </button>
+
+          {patientAppointments.length > 0 && (
+            <div style={styles.searchResult}>
+              <h4>Appointments for Patient ID: {searchPatientId}</h4>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.th}>Appointment ID</th>
+                    <th style={styles.th}>Date</th>
+                    <th style={styles.th}>Doctor ID</th>
+                    <th style={styles.th}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {patientAppointments.map((appointment) => (
+                    <tr key={appointment.id}>
+                      <td style={styles.td}>{appointment.id}</td>
+                      <td style={styles.td}>
+                        {new Date(appointment.date).toLocaleDateString()}
+                      </td>
+                      <td style={styles.td}>{appointment.doctor_id}</td>
+                      <td style={styles.td}>
+                        <button
+                          onClick={() => initiateEdit(appointment)}
+                          style={styles.editButton}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteAppointment(appointment.id)}
+                          style={styles.deleteButton}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Edit Appointment Form */}
+        {editAppointment && (
+          <div style={styles.section}>
+            <h3>Edit Appointment (ID: {editAppointment.id})</h3>
+            <form onSubmit={updateAppointment} style={styles.form}>
+              <input
+                type="date"
+                name="date"
+                value={editAppointment.date}
+                onChange={handleEditAppointmentChange}
+                required
+                style={styles.input}
+              />
+              <input
+                type="number"
+                name="patient_id"
+                placeholder="Patient ID"
+                value={editAppointment.patient_id}
+                onChange={handleEditAppointmentChange}
+                required
+                style={styles.input}
+              />
+              <input
+                type="number"
+                name="doctor_id"
+                placeholder="Doctor ID"
+                value={editAppointment.doctor_id}
+                onChange={handleEditAppointmentChange}
+                required
+                style={styles.input}
+              />
+              <button type="submit" style={styles.button}>
+                Update Appointment
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditAppointment(null)}
+                style={{ ...styles.button, backgroundColor: "#6c757d" }}
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* All Appointments List */}
+        <div style={styles.section}>
+          <h3>All Appointments</h3>
+          {appointments.length > 0 ? (
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>ID</th>
+                  <th style={styles.th}>Date</th>
+                  <th style={styles.th}>Patient ID</th>
+                  <th style={styles.th}>Doctor ID</th>
+                  <th style={styles.th}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td style={styles.td}>{appointment.id}</td>
+                    <td style={styles.td}>
+                      {new Date(appointment.date).toLocaleDateString()}
+                    </td>
+                    <td style={styles.td}>{appointment.patient_id}</td>
+                    <td style={styles.td}>{appointment.doctor_id}</td>
+                    <td style={styles.td}>
+                      <button
+                        onClick={() => initiateEdit(appointment)}
+                        style={styles.editButton}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteAppointment(appointment.id)}
+                        style={styles.deleteButton}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>
+              No appointments found. Consider adding a GET /appointments
+              endpoint in your backend.
+            </p>
+          )}
+        </div>
       </div>
     </>
   );
