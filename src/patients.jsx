@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
+const API_BASE_URL = "http://localhost:8000"; // this makes the backend url easily accessible
 
 export default function PatientManagement() {
   const [patients, setPatients] = useState([]);
