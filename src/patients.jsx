@@ -4,7 +4,7 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
 
-function PatientManagement() {
+export default function PatientManagement() {
   const [patients, setPatients] = useState([]);
   const [newPatient, setNewPatient] = useState({
     name: "",
@@ -443,4 +443,4 @@ const styles = {
   },
 };
 
-export default PatientManagement;
+
