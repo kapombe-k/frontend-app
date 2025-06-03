@@ -1,10 +1,9 @@
-// src/components/VisitManagement.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
 
-export default function VisitManagement() {
+export default function VisitsComponent() {
   const [visits, setVisits] = useState([]);
   const [newVisit, setNewVisit] = useState({
     date: "",

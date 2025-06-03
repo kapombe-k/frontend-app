@@ -1,10 +1,9 @@
-// src/components/DoctorManagement.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
+const API_BASE_URL = "http://localhost:8000"; 
 
-function DoctorManagement() {
+export default function DoctorComponent() {
   const [doctors, setDoctors] = useState([]);
   const [newDoctor, setNewDoctor] = useState({ name: "" });
   const [searchId, setSearchId] = useState("");
@@ -18,25 +17,16 @@ function DoctorManagement() {
 
   // Function to fetch all doctors from the backend
   const fetchAllDoctors = async () => {
-    try {
-      // Your backend's /doctors endpoint currently takes an ID.
-      // For fetching all, we need a different endpoint or modify the existing one.
-      // Assuming your backend has or will have an endpoint like '/doctors/all' or if the existing one can be used without an ID.
-      // Based on your app.py, the @app.get('/doctors') endpoint takes 'doctor_id: int'.
-      // This is a common pattern for "get a single by ID".
-      // To get all, you'd typically have another endpoint like @app.get('/doctors/') without an ID in the path.
-      // For now, I'll simulate fetching all by trying to hit an adjusted endpoint.
-      // You might need to change your FastAPI code for `get_all_doctors` to not require `doctor_id`.
+    try {      
       const response = await axios.get(`${API_BASE_URL}/doctors`); // This will likely fail if your backend requires an ID.
       setDoctors(response.data);
     } catch (error) {
       console.error(
-        "Error fetching doctors (make sure your /doctors GET endpoint supports fetching all):",
+        "Error fetching doctors",
         error
-      );
-      // If the above fails, you can manually add a dummy endpoint in your backend to fetch all, or update the existing one.
+      );      
       alert(
-        "Failed to fetch all doctors. Ensure your backend `/doctors` GET endpoint allows fetching all without an ID."
+        "Failed to fetch all doctors."
       );
       setDoctors([]); // Clear doctors if fetching fails
     }
@@ -58,11 +48,7 @@ function DoctorManagement() {
   const addDoctor = async (e) => {
     e.preventDefault();
     try {
-      // Your backend has POST /doctors/{doctor_id} which implies updating.
-      // For adding, it should ideally be POST /doctors
-      // I'll adjust the request to hit the expected POST /doctors route based on common REST practices.
-      // If your backend truly requires an ID for POST, you'll need to re-evaluate your backend design for adding doctors.
-      await axios.post(`${API_BASE_URL}/doctors`, newDoctor); // Assuming POST /doctors is for adding
+      await axios.post(`${API_BASE_URL}/doctors`, newDoctor); // dctors is for adding
       alert("Doctor added successfully!");
       setNewDoctor({ name: "" }); // Clear form
       fetchAllDoctors(); // Refresh the list
@@ -355,5 +341,3 @@ const styles = {
     textAlign: "left",
   },
 };
-
-export default DoctorManagement;

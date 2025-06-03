@@ -1,10 +1,9 @@
-// src/components/PatientManagement.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8000"; // this makes the backend url easily accessible
 
-export default function PatientManagement() {
+export default function PatientComponent() {
   const [patients, setPatients] = useState([]);
   const [newPatient, setNewPatient] = useState({
     name: "",

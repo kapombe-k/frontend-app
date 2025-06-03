@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import Patients from "./patients";
-import Doctors from "./doctors";
-import Appointments from "./appointments";
-import Visits from "./visits";
+import PatientComponent from "./patients";
+import VisitsComponent from "./visits";
+import AppointmentComponent from "./appointments";
+import DoctorComponent from "./doctors";
 
 function App() {
 
   return (
     <>
-      <Patients />
-      <Doctors />
-      <Visits />
-      <Appointments />
+      <PatientComponent />
+      <DoctorComponent />
+      <VisitsComponent />
+      <AppointmentComponent />
     </>
   );
 }

@@ -1,10 +1,9 @@
-// src/components/AppointmentManagement.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
 
-function AppointmentManagement() {
+export default function AppointmentComponent() {
   const [appointments, setAppointments] = useState([]);
   const [newAppointment, setNewAppointment] = useState({
     date: "",
@@ -22,18 +21,16 @@ function AppointmentManagement() {
 
   // Function to fetch all appointments from the backend
   const fetchAllAppointments = async () => {
-    try {
-      // Your backend currently doesn't have a GET /appointments endpoint to fetch all directly.
-      // It has POST, PATCH, DELETE. You'll need to add a GET /appointments endpoint to your app.py
+    try {      
       const response = await axios.get(`${API_BASE_URL}/appointments`); // This endpoint likely needs to be added to app.py
       setAppointments(response.data);
     } catch (error) {
       console.error(
-        "Error fetching appointments (ensure GET /appointments endpoint exists):",
+        "Error fetching appointments",
         error
       );
       alert(
-        "Failed to fetch appointments. Please ensure your backend has a GET `/appointments` endpoint."
+        "Failed to fetch appointments."
       );
       setAppointments([]); // Clear appointments if fetching fails
     }
@@ -442,4 +439,4 @@ const styles = {
   },
 };
 
-export default AppointmentManagement;
+
