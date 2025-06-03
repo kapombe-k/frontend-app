@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; 
+const backendUrl = "http://localhost:8000"; 
 
 export default function DoctorComponent() {
   const [doctors, setDoctors] = useState([]);
@@ -18,7 +18,7 @@ export default function DoctorComponent() {
   // Function to fetch all doctors from the backend
   const fetchAllDoctors = async () => {
     try {      
-      const response = await axios.get(`${API_BASE_URL}/doctors`); // This will likely fail if your backend requires an ID.
+      const response = await axios.get(`${backendUrl}/doctors`); // This will likely fail if your backend requires an ID.
       setDoctors(response.data);
     } catch (error) {
       console.error(
@@ -48,7 +48,7 @@ export default function DoctorComponent() {
   const addDoctor = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/doctors`, newDoctor); // dctors is for adding
+      await axios.post(`${backendUrl}/doctors`, newDoctor); // dctors is for adding
       alert("Doctor added successfully!");
       setNewDoctor({ name: "" }); // Clear form
       fetchAllDoctors(); // Refresh the list
@@ -58,7 +58,7 @@ export default function DoctorComponent() {
         error
       );
       alert(
-        `Failed to add doctor: ${error.response?.data?.detail || error.message}`
+        `Failed to add doctor`
       );
     }
   };
@@ -70,7 +70,7 @@ export default function DoctorComponent() {
       return;
     }
     try {
-      const response = await axios.get(`${API_BASE_URL}/doctors/${searchId}`);
+      const response = await axios.get(`${backendUrl}/doctors/${searchId}`);
       setFoundDoctor(response.data);
     } catch (error) {
       console.error("Error searching doctor:", error);
@@ -90,16 +90,14 @@ export default function DoctorComponent() {
     if (!editDoctor) return;
 
     try {
-      await axios.patch(`${API_BASE_URL}/doctors/${editDoctor.id}`, editDoctor);
+      await axios.patch(`${backendUrl}/doctors/${editDoctor.id}`, editDoctor);
       alert("Doctor updated successfully!");
       setEditDoctor(null); // Clear edit form
       fetchAllDoctors(); // Refresh the list
     } catch (error) {
       console.error("Error updating doctor:", error);
       alert(
-        `Failed to update doctor: ${
-          error.response?.data?.detail || error.message
-        }`
+        `Failed to update doctor`
       );
     }
   };
@@ -110,16 +108,14 @@ export default function DoctorComponent() {
       window.confirm(`Are you sure you want to delete doctor with ID: ${id}?`)
     ) {
       try {
-        await axios.delete(`${API_BASE_URL}/doctors/${id}`);
+        await axios.delete(`${backendUrl}/doctors/${id}`);
         alert("Doctor deleted successfully!");
         fetchAllDoctors(); // Refresh the list
         setFoundDoctor(null); // Clear search result if deleted
       } catch (error) {
         console.error("Error deleting doctor:", error);
         alert(
-          `Failed to delete doctor: ${
-            error.response?.data?.detail || error.message
-          }`
+          `Failed to delete doctor`
         );
       }
     }

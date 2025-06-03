@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
+const backendUrl = "http://localhost:8000"; 
 
 export default function VisitsComponent() {
   const [visits, setVisits] = useState([]);
@@ -26,7 +26,7 @@ export default function VisitsComponent() {
   // Function to fetch all visits from the backend
   const fetchAllVisits = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/visits`);
+      const response = await axios.get(`${backendUrl}/visits`);
       setVisits(response.data);
     } catch (error) {
       console.error("Error fetching visits:", error);
@@ -52,7 +52,7 @@ export default function VisitsComponent() {
     try {
       // Ensure date is in YYYY-MM-DD format
       const formattedVisit = { ...newVisit, date: newVisit.date };
-      await axios.post(`${API_BASE_URL}/visits`, formattedVisit);
+      await axios.post(`${backendUrl}/visits`, formattedVisit);
       alert("Visit added successfully!");
       setNewVisit({
         date: "",
@@ -80,14 +80,14 @@ export default function VisitsComponent() {
     }
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/patients/${searchPatientId}/visits`
+        `${backendUrl}/patients/${searchPatientId}/visits`
       ); // Assuming you'll add this endpoint to your backend
       setPatientVisits(response.data);
     } catch (error) {
       console.error("Error searching visits:", error);
       setPatientVisits([]);
       alert(
-        `No visits found for patient with ID ${searchPatientId}, or patient does not exist. (You might need to implement /patients/{id}/visits endpoint in your backend)`
+        `No visits found for patient with ID ${searchPatientId}, or patient does not exist.`
       );
       // Fallback for demonstration if the specific patient visits endpoint isn't ready
       const filteredVisits = visits.filter(
@@ -115,10 +115,7 @@ export default function VisitsComponent() {
     try {
       // Ensure date is in YYYY-MM-DD format
       const formattedVisit = { ...editVisit, date: editVisit.date };
-      await axios.patch(
-        `${API_BASE_URL}/visits/${editVisit.id}`,
-        formattedVisit
-      );
+      await axios.patch(`${backendUrl}/visits/${editVisit.id}`, formattedVisit);
       alert("Visit updated successfully!");
       setEditVisit(null); // Clear edit form
       fetchAllVisits(); // Refresh the list
@@ -139,7 +136,7 @@ export default function VisitsComponent() {
       window.confirm(`Are you sure you want to delete visit with ID: ${id}?`)
     ) {
       try {
-        await axios.delete(`${API_BASE_URL}/visits/${id}`);
+        await axios.delete(`${backendUrl}/visits/${id}`);
         alert("Visit deleted successfully!");
         fetchAllVisits(); // Refresh the list
         setPatientVisits([]); // Clear patient specific search

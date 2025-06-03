@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; // this makes the backend url easily accessible
+const backendUrl = "http://localhost:8000"; // this makes the backend url easily accessible
 
 export default function PatientComponent() {
   const [patients, setPatients] = useState([]);
@@ -24,7 +24,7 @@ export default function PatientComponent() {
   // Function to fetch all patients from the backend
   const fetchAllPatients = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/patients`);
+      const response = await axios.get(`${backendUrl}/patients`);
       setPatients(response.data);
     } catch (error) {
       console.error("Error fetching patients:", error);
@@ -48,7 +48,7 @@ export default function PatientComponent() {
   const addPatient = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/patients`, newPatient);
+      await axios.post(`${backendUrl}/patients`, newPatient);
       alert("Patient added successfully!");
       setNewPatient({
         name: "",
@@ -61,9 +61,7 @@ export default function PatientComponent() {
     } catch (error) {
       console.error("Error adding patient:", error);
       alert(
-        `Failed to add patient: ${
-          error.response?.data?.detail || error.message
-        }`
+        `Failed to add patient`
       );
     }
   };
@@ -75,7 +73,7 @@ export default function PatientComponent() {
       return;
     }
     try {
-      const response = await axios.get(`${API_BASE_URL}/pateints/${searchId}`); // Note: Your backend has 'pateints'
+      const response = await axios.get(`${backendUrl}/pateints/${searchId}`); // Note: Your backend has 'pateints'
       setFoundPatient(response.data);
     } catch (error) {
       console.error("Error searching patient:", error);
@@ -96,7 +94,7 @@ export default function PatientComponent() {
 
     try {
       await axios.patch(
-        `${API_BASE_URL}/patients/${editPatient.id}`,
+        `${backendUrl}/patients/${editPatient.id}`,
         editPatient
       );
       alert("Patient updated successfully!");
@@ -105,9 +103,7 @@ export default function PatientComponent() {
     } catch (error) {
       console.error("Error updating patient:", error);
       alert(
-        `Failed to update patient: ${
-          error.response?.data?.detail || error.message
-        }`
+        `Failed to update patient`
       );
     }
   };
@@ -118,16 +114,14 @@ export default function PatientComponent() {
       window.confirm(`Are you sure you want to delete patient with ID: ${id}?`)
     ) {
       try {
-        await axios.delete(`${API_BASE_URL}/patients/${id}`);
+        await axios.delete(`${backendUrl}/patients/${id}`);
         alert("Patient deleted successfully!");
         fetchAllPatients(); // Refresh the list
         setFoundPatient(null); // Clear search result if deleted
       } catch (error) {
         console.error("Error deleting patient:", error);
         alert(
-          `Failed to delete patient: ${
-            error.response?.data?.detail || error.message
-          }`
+          `Failed to delete patient`
         );
       }
     }

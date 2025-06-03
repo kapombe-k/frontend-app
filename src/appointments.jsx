@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
+const backendUrl = "http://localhost:8000"; // Make sure this matches your FastAPI backend URL
 
 export default function AppointmentComponent() {
   const [appointments, setAppointments] = useState([]);
@@ -22,7 +22,7 @@ export default function AppointmentComponent() {
   // Function to fetch all appointments from the backend
   const fetchAllAppointments = async () => {
     try {      
-      const response = await axios.get(`${API_BASE_URL}/appointments`); // This endpoint likely needs to be added to app.py
+      const response = await axios.get(`${backendUrl}/appointments`); // This endpoint likely needs to be added to app.py
       setAppointments(response.data);
     } catch (error) {
       console.error(
@@ -57,7 +57,7 @@ export default function AppointmentComponent() {
         ...newAppointment,
         date: newAppointment.date,
       };
-      await axios.post(`${API_BASE_URL}/appointments`, formattedAppointment);
+      await axios.post(`${backendUrl}/appointments`, formattedAppointment);
       alert("Appointment added successfully!");
       setNewAppointment({ date: "", patient_id: "", doctor_id: "" }); // Clear form
       fetchAllAppointments(); // Refresh the list
@@ -80,7 +80,7 @@ export default function AppointmentComponent() {
     try {
       // You'll likely need an endpoint like /patients/{id}/appointments to get a patient's appointments
       const response = await axios.get(
-        `${API_BASE_URL}/patients/${searchPatientId}/appointments`
+        `${backendUrl}/patients/${searchPatientId}/appointments`
       ); // Needs to be added to backend
       setPatientAppointments(response.data);
     } catch (error) {
@@ -122,7 +122,7 @@ export default function AppointmentComponent() {
         date: editAppointment.date,
       };
       await axios.patch(
-        `${API_BASE_URL}/appointments/${editAppointment.id}`,
+        `${backendUrl}/appointments/${editAppointment.id}`,
         formattedAppointment
       );
       alert("Appointment updated successfully!");
@@ -147,7 +147,7 @@ export default function AppointmentComponent() {
       )
     ) {
       try {
-        await axios.delete(`${API_BASE_URL}/appointments/${id}`);
+        await axios.delete(`${backendUrl}/appointments/${id}`);
         alert("Appointment deleted successfully!");
         fetchAllAppointments(); // Refresh the list
         setPatientAppointments([]); // Clear patient specific search
