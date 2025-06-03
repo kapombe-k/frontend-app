@@ -349,8 +349,7 @@ export default function AppointmentComponent() {
           </table>
         ) : (
           <p>
-            No appointments found. Consider adding a GET /appointments endpoint
-            in your backend.
+            No appointments found.
           </p>
         )}
       </div>
